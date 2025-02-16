@@ -96,8 +96,10 @@ public class MainGrid : MonoBehaviour
         Audio.PlaySoundAtTransform("press", Buttons[pos].transform);
         Buttons[pos].AddInteractionPunch();
 
-        CurrentState.SetCell(pos % 4, pos / 4, CurrentLayer, !CurrentState.GetCell(pos % 4, pos / 4, CurrentLayer));
+        var state = !CurrentState.GetCell(pos % 4, pos / 4, CurrentLayer);
+        CurrentState.SetCell(pos % 4, pos / 4, CurrentLayer, state);
         SetColours(CurrentLayer);
+        Audio.PlaySoundAtTransform("turn " + (state ? "on" : "off"), Buttons[pos].transform);
     }
 
     private void TopButtonPress(int pos)
@@ -121,11 +123,13 @@ public class MainGrid : MonoBehaviour
         {
             CurrentState = new ConwayGridCollection(GridSize, true);
             SetColours(CurrentLayer);
+            Audio.PlaySoundAtTransform("clear", transform);
         }
         else if (pos == 2)
         {
             CurrentState = InitialState.Copy();
             SetColours(CurrentLayer);
+            Audio.PlaySoundAtTransform("reset", transform);
         }
     }
 
